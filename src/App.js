@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import { Switch } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 
 import HomePage from './routes/HomePage'
 import LoginPage from './routes/LoginPage'
@@ -16,7 +17,7 @@ import './App.css';
 class App extends React.Component {
   render() {
     return (
-      <Router>
+      <MemoryRouter>
         <div className="App">
           <Switch>
             <ProtectedRoute exact path="/" component={ HomePage } />
@@ -27,7 +28,7 @@ class App extends React.Component {
             <GuestRoute path="/register" component={ RegisterPage } />
           </Switch>
         </div>
-      </Router>
+      </MemoryRouter>
     );
   }
 }
