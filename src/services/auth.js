@@ -1,6 +1,6 @@
 import axios from 'axios'
 import decode from 'jwt-decode'
-const apiURL = 'http://localhost:3001'
+const apiURL = 'http://52.15.143.180:3000/'
 
 export const isTokenExpired = (token) => {
     try {
