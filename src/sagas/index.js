@@ -2,7 +2,7 @@ import { all, call, put, takeLatest } from 'redux-saga/effects'
 import axios from 'axios'
 import { getToken, setToken, removeToken } from '../services/auth' 
 
-export const apiURL = 'http://localhost:3001'
+export const apiURL = 'http://52.15.143.180:3000'
 
 function* loginUser(action) {
     if(action.payload !== undefined) {
