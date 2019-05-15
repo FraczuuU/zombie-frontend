@@ -1,0 +1,39 @@
+.ProfilePage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #202020;
+}
+
+.ProfilePage-H1 {
+    color: #aaaaaa;
+    font-size: 5rem;
+    margin-bottom: 50px;
+}
+
+.Profile-Button {
+    box-sizing: border-box;
+    width: 300px;
+    height: 50px;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 10px;
+    background-color: #aaaaaa;
+    color: #000000;
+    border: 1px solid black;
+}
+
+.Profile-Button:hover {
+    background-color: #cccccc;
+    color: #222222;
+    cursor: pointer;
+}
+
+.Currency-Select {
+    position: fixed;
+    top: 0;
+    left: 0;
+}

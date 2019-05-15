@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
+
+import HomePage from './routes/HomePage'
+import LoginPage from './routes/LoginPage'
+import ProfilePage from './routes/ProfilePage'
+import ShopPage from './routes/ShopPage'
+import SettingsPage from './routes/SettingsPage'
+import RegisterPage from './routes/RegisterPage'
+
+import { ProtectedRoute } from './components/ProtectedRoute'
+import { GuestRoute } from './components/GuestRoute'
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <Switch>
+            <ProtectedRoute exact path="/" component={ HomePage } />
+            <ProtectedRoute exact path="/profile" component={ ProfilePage } />
+            <ProtectedRoute exact path="/settings" component={ SettingsPage } />
+            <ProtectedRoute exact path="/shop" component={ ShopPage } />
+            <GuestRoute path="/login" component={ LoginPage } />
+            <GuestRoute path="/register" component={ RegisterPage } />
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;

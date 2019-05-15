@@ -1,0 +1,54 @@
+.RegisterPage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #202020;
+}
+
+.RegisterPage-H1 {
+    color: #aaaaaa;
+    font-size: 5rem;
+}
+ 
+.RegisterPage-Form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.RegisterPage-Form input {
+    box-sizing: border-box;
+    width: 300px;
+    height: 50px;
+    margin: 5px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.RegisterPage-Form input {
+    margin-top: 10px;
+    background-color: #aaaaaa;
+    color: #000000;
+    border: 1px solid black;
+}
+
+.RegisterPage input:hover {
+    background-color: #cccccc;
+    color: #222222;
+    cursor: pointer;
+}
+
+.login-link {
+    margin-top: 10px;
+    color: #aaaaaa;
+    font-size: 1.2rem;
+}
+
+.login-link:hover {
+    color: #ffffff;
+    cursor: pointer;
+}
