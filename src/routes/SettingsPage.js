@@ -50,6 +50,10 @@ class SettingsPage extends React.Component {
         this.props.history.push('/login')
     }
 
+    setConfirm() {
+        this.setState({ confirm: true })
+    }
+
     render() {
         return (
             <div className="SettingsPage">
@@ -58,7 +62,7 @@ class SettingsPage extends React.Component {
                 <input type="button" onClick={ () => this.props.changeEmail(this.state.email) } value="Change E-mail" />
                 { (this.state.confirm) 
                 ? <input type="button" onClick={ () => this.deleteAccount() } value="Are you sure?" />
-                : <input type="button" onClick={ this.setState({ confirm: true }) } value="Delete account" /> }
+                : <input type="button" onClick={ () => this.setConfirm() } value="Delete account" /> }
                 <input type="button" onClick={ () => this.goBackButton() } value="Go back" />
             </div>
         )
