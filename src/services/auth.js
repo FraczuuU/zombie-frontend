@@ -1,6 +1,7 @@
 import axios from 'axios'
 import decode from 'jwt-decode'
-const apiURL = 'http://52.15.143.180:3000/'
+
+import { apiURL } from '../sagas/index'
 
 export const isTokenExpired = (token) => {
     try {
