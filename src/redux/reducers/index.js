@@ -13,11 +13,16 @@ const initialState = {
     loggedOut: false,
     soldItem: false,
     boughtItem: false,
+    invalidToken: false,
     message: ''
 }
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
+
+        case 'TOKEN_INVALID' : {
+            return { ...state, invalidToken: true }
+        }
 
         case 'LOGGED_IN' : {
             return { ...state, loggedIn: true, loggedOut: false }

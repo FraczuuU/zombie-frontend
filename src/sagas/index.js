@@ -2,11 +2,11 @@ import { all, call, put, takeLatest } from 'redux-saga/effects'
 import axios from 'axios'
 import { getToken, setToken, removeToken } from '../services/auth' 
 
-export const apiURL = 'http://3.19.62.54:3000'
-//export const apiURL = 'http://localhost:3001'
+//export const apiURL = 'http://3.19.62.54:3000'
+export const apiURL = 'http://localhost:3001'
 
 
-function* loginUser(action) {
+export function* loginUser(action) {
     if(action.payload !== undefined) {
         try {
             const res = yield call([axios, axios.post], apiURL + '/login', action.payload)
@@ -14,35 +14,36 @@ function* loginUser(action) {
                 setToken(res.data.token)
                 yield put({ type: 'LOGGED_IN' })
             } else
-                yield put({ type: 'SHOW_MESSAGE', payload: 'Invalid username or password!' })
+                yield put({ type: 'SHOW_MESSAGE', payload: res.data.errors[0].msg })
             
         } catch(err) {
-            console.log('An error occured, try again later!')
+            yield put({ type: 'SHOW_MESSAGE', payload: 'An error occured, try again later!' })
+
         }
     }
 }
 
-function* registerUser(action) {
+export function* registerUser(action) {
     if(action.payload !== undefined) {
         try {
             const res = yield call([axios, axios.post], apiURL + '/register', action.payload)
             if(res.data.msg) {
                 yield put({ type: 'REGISTERED' })
             } else
-                yield put({ type: 'SHOW_MESSAGE', payload: 'This e-mail is already in use!' })
+                yield put({ type: 'SHOW_MESSAGE', payload: res.data.errors[0].msg })
         } catch(err) {
-            console.log('An error occured, try again later!')
+            yield put({ type: 'SHOW_MESSAGE', payload: 'An error occured, try again later!' })
         }
     }
 }
 
-function* logoutUser() {
+export function* logoutUser() {
     removeToken('token') 
     yield put({ type: 'LOGGED_OUT' })      
 }
 
 
-function* getProfile(action) {
+export function* getProfile(action) {
         const res = yield call([axios, axios.get], apiURL + '/users/profile?currency=' + action.payload, {
             'headers': {
                 'Authorization': 'Bearer ' + getToken()
@@ -52,10 +53,10 @@ function* getProfile(action) {
         if(user) {
             yield put({ type: 'SHOW_PROFILE', payload: { user, worth } })
         } else
-            console.log('Error while getting items!')
+            yield put({ type: 'SHOW_MESSAGE', payload: 'An error occured, try again later!' })
 }
 
-function* getShop(action) {
+export function* getShop(action) {
     const res = yield call([axios, axios.get], apiURL + '/users/items/shop?currency=' + action.payload, {
         'headers': {
             'Authorization': 'Bearer ' + getToken()
@@ -65,10 +66,10 @@ function* getShop(action) {
     if(items) {
         yield put({ type: 'SHOW_SHOP', payload: { items, money } })
     } else
-        console.log('Error while getting items!')
+        yield put({ type: 'SHOW_MESSAGE', payload: 'An error occured, try again later!' })
 }
 
-function* sellItem(action) {
+export function* sellItem(action) {
     const res = yield call([axios, axios.delete], apiURL + '/users/items?id=' + action.payload, {
         'headers': {
             'Authorization': 'Bearer ' + getToken()
@@ -78,10 +79,10 @@ function* sellItem(action) {
     } else if(res.data.errors[0].msg) {
         yield put({ type: 'SHOW_MESSAGE', payload: res.data.errors[0].msg })
     } else
-        console.log('Error while getting items!')
+        yield put({ type: 'SHOW_MESSAGE', payload: 'An error occured, try again later!' })
 }
 
-function* buyItem(action) {
+export function* buyItem(action) {
     const res = yield call([axios, axios.post], apiURL + '/users/items', { id: action.payload }, {
         'headers': {
             'Authorization': 'Bearer ' + getToken()
@@ -91,10 +92,10 @@ function* buyItem(action) {
     } else if(res.data.errors[0].msg) {
         yield put({ type: 'SHOW_MESSAGE', payload: res.data.errors[0].msg })
     } else
-        console.log('Error while getting items!')
+        yield put({ type: 'SHOW_MESSAGE', payload: 'An error occured, try again later!' })
 }
 
-function* changeEmail(action) {
+export function* changeEmail(action) {
     const res = yield call([axios, axios.patch], apiURL + '/users/', { email: action.payload }, {
         'headers': {
             'Authorization': 'Bearer ' + getToken()
@@ -104,11 +105,11 @@ function* changeEmail(action) {
     } else if(res.data.errors[0].msg) {
         yield put({ type: 'SHOW_MESSAGE', payload: res.data.errors[0].msg })
     } else
-        console.log('Error while changing e-mail!')
+        yield put({ type: 'SHOW_MESSAGE', payload: 'An error occured, try again later!' })
 }
 
 
-function* deleteUser(action) {
+export function* deleteUser(action) {
     const res = yield call([axios, axios.delete], apiURL + '/users/', {
         'headers': {
             'Authorization': 'Bearer ' + getToken()
@@ -118,7 +119,42 @@ function* deleteUser(action) {
     } else if(res.data.errors[0].msg) {
         yield put({ type: 'SHOW_MESSAGE', payload: res.data.errors[0].msg })
     } else
-        console.log('Error while deleting account!')
+        yield put({ type: 'SHOW_MESSAGE', payload: 'An error occured, try again later!' })
+}
+
+export function* sendResetEmail(action) {
+    const res = yield call([axios, axios.post], apiURL + '/forgot-password/', action.payload)
+    if(res.data.msg) {
+        yield put({ type: 'SHOW_MESSAGE', payload: res.data.msg })
+    } else if(res.data.errors[0].msg) {
+        yield put({ type: 'SHOW_MESSAGE', payload: res.data.errors[0].msg })
+    } else
+        yield put({ type: 'SHOW_MESSAGE', payload: 'An error occured, try again later!' })
+}
+
+export function* resetPassword(action) {
+    const res = yield call([axios, axios.post], apiURL + '/reset-password/' + action.payload.token,
+    { password: action.payload.password, confirmPassword: action.payload.confirmPassword })
+    console.log(action.payload)
+    console.log(res.data)
+
+    if(res.data.msg) {
+        yield put({ type: 'SHOW_MESSAGE', payload: res.data.msg })
+    } else if(res.data.errors[0].msg) {
+        yield put({ type: 'SHOW_MESSAGE', payload: res.data.errors[0].msg })
+    } else
+        yield put({ type: 'SHOW_MESSAGE', payload: 'An error occured, try again later!' })
+}
+
+export function* checkResetToken(action) {
+    const res = yield call([axios, axios.get], apiURL + '/reset-password/' + action.payload.token)
+
+    if(res.data.msg) {
+        
+    } else if(res.data.errors[0].msg) {
+        yield put({ type: 'INVALID_TOKEN', payload: res.data.errors[0].msg })
+    } else
+        yield put({ type: 'INVALID_TOKEN', payload: 'An error occured, try again later!' })
 }
 
 export function* loginUserWatcher() {
@@ -157,6 +193,18 @@ export function* deleteUserWatcher() {
     yield takeLatest('DELETE_USER', deleteUser)
 }
 
+export function* sendResetEmailWatcher() {
+    yield takeLatest('SEND_RESET_EMAIL', sendResetEmail)
+}
+
+export function* resetPasswordWatcher() {
+    yield takeLatest('RESET_PASSWORD', resetPassword)
+}
+
+export function* checkResetTokenWatcher() {
+    yield takeLatest('CHECK_RESET_TOKEN', checkResetToken)
+}
+
 export function* rootSaga() {
     yield all([
         loginUserWatcher(),
@@ -167,6 +215,9 @@ export function* rootSaga() {
         getShopWatcher(),
         buyItemWatcher(),
         changeEmailWatcher(),
-        deleteUserWatcher()
+        deleteUserWatcher(),
+        sendResetEmailWatcher(),
+        resetPasswordWatcher(),
+        checkResetTokenWatcher()
     ])
 }

@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import toaster from 'toasted-notes';
-import 'toasted-notes/src/styles.css';
+import toaster from 'toasted-notes'
+import 'toasted-notes/src/styles.css'
 
 import './LoginPage.css';
 
@@ -52,6 +52,10 @@ class LoginPage extends React.Component {
     this.props.history.push('/register')
   }
 
+  goToForgotPassword() {
+    this.props.history.push('/forgot-password')
+  }
+
   render() {
     return (
       <div className="LoginPage">
@@ -61,6 +65,7 @@ class LoginPage extends React.Component {
           <input type="password" onChange={ (e) => this.onChangePassword(e) } value={ this.state.password } placeholder="Password" />
           <input type="button" onClick={ () => this.props.loginUser(this.state.email, this.state.password) } value="Login" />
         </form>
+        <p className="forgotPassword-link" onClick={ () => this.goToForgotPassword() }>Forgot password</p>
         <p className="register-link" onClick={ () => this.goToRegister() }>Create new account</p>
       </div>
     );

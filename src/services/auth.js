@@ -33,8 +33,10 @@ export const getTokenData = () => {
 
 export const loggedIn =  async () => {
     try {
-        const token = getToken()
-        const response = await axios.post(apiURL + '/auth', { token: token })
+        const response = await axios.get(apiURL + '/auth', {
+            'headers': {
+                'Authorization': 'Bearer ' + getToken()
+        }})
         if(response.data.msg) return true
         else return false
     } catch(err) {
