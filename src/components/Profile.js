@@ -43,12 +43,15 @@ class Profile extends React.Component {
 
         if(prevState.currency !== this.props.currency) {
             getProfile(this.props.currency)
+            toaster.notify('Updating prices!', {
+                duration: 1000
+            })
         }
-
     }
 
     render() {
         if (!this.state.loaded) return null
+        if(!this.props.user.email) return <div className="loading">Loading...</div>
         return (
             <div className="Profile">
                 <h3 className="Profile-Email">E-mail: { this.props.user.email }</h3>

@@ -43,12 +43,16 @@ class Shop extends React.Component {
 
         if(prevState.currency !== this.props.currency) {
             getShop(this.props.currency)
+            toaster.notify('Updating prices!', {
+                duration: 1000
+            })
         }
 
     }
 
     render() {
         if (!this.state.loaded) return null
+        if(!this.props.user.money) return <div className="loading">Loading...</div>
         return (
             <div className="Shop">
                 <p className="Shop-Items-P">Items:</p>

@@ -135,8 +135,6 @@ export function* sendResetEmail(action) {
 export function* resetPassword(action) {
     const res = yield call([axios, axios.post], apiURL + '/reset-password/' + action.payload.token,
     { password: action.payload.password, confirmPassword: action.payload.confirmPassword })
-    console.log(action.payload)
-    console.log(res.data)
 
     if(res.data.msg) {
         yield put({ type: 'SHOW_MESSAGE', payload: res.data.msg })
